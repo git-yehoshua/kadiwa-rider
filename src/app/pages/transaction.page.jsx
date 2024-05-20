@@ -10,11 +10,12 @@ import MapComponent from "../components/map/map";
 import OvalButton from "../components/buttons/oval.button";
 import StopsSegments from "../components/transactions/stops.segments";
 import TransactionDetails from "../components/transactions/transaction.details";
+import { toast } from "sonner";
 
 const TransactionPage = () => {
   const [showSplash, setShowSplash] = useState(true);
   const [jobAccepted, setJobAccepted] = useState(false);
-  const [numberOfStops, setNumberOfStops] = useState(0);
+  const [numberOfStops, setNumberOfStops] = useState(2);
 
   useEffect(() => {
     // Simulate loading time
@@ -29,6 +30,14 @@ const TransactionPage = () => {
     setJobAccepted(true);
   };
 
+  const handleTest = () => {
+    toast.info("This feature is coming soon!");
+  };
+
+  const handleSampleLoc = () => {
+    toast.info("This is only a sample don't mind it!");
+  };
+
   return (
     <>
       <div className="flex flex-col h-screen">
@@ -36,11 +45,17 @@ const TransactionPage = () => {
         <TransactionDetails />
         <div className="flex items-center justify-center h-full">
           <MapComponent />
-          <button className="absolute items-center border border-white text-white bg-yellow-500 rounded-full py-2 px-3 z-[1999] right-[34%] bottom-[37%]">
+          <button
+            className="absolute items-center border border-white text-white bg-yellow-500 rounded-full py-2 px-3 z-[1999] right-[34%] bottom-[37%]"
+            onClick={handleSampleLoc}
+          >
             1
           </button>
 
-          <button className="absolute items-center border border-white text-white bg-green-500 rounded-full py-2 px-3 z-[1999] right-[10%] top-[30%]">
+          <button
+            className="absolute items-center border border-white text-white bg-green-500 rounded-full py-2 px-3 z-[1999] right-[10%] top-[30%]"
+            onClick={handleSampleLoc}
+          >
             2
           </button>
         </div>
@@ -51,22 +66,24 @@ const TransactionPage = () => {
               <CircleButton
                 icon={<IoIosCall size={20} />}
                 text={"call"}
-                onClick={handleSimulate}
+                onClick={handleTest}
               />
               <CircleButton
                 icon={<RiMessage3Fill size={20} className="scale-x-[-1]" />}
                 text={"message"}
+                onClick={handleTest}
               />
               <CircleButton
                 icon={<RiShoppingBag3Fill size={20} />}
                 text={"order details"}
-                onClick={handleSimulate}
+                onClick={handleTest}
               />
               <CircleButton
                 icon={
                   <RiLightbulbFlashFill size={20} className="text-yellow-400" />
                 }
                 text={"Auto Accept"}
+                onClick={handleTest}
               />
             </ButtonContainer>
             <div className="flex w-full">

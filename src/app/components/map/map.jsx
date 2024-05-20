@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import L from "leaflet";
 import CurrentLocationButton from "../buttons/current.location.button";
 import { CustomerIcon, MerchantIcon, RiderIcon } from "./marker";
 
 function LocationMarker({ position, iconType }) {
   const map = useMap();
+
+  // Define a custom icon
+  const customIcon = new L.Icon({
+    iconUrl: "src/app/assets/loc.marker/current.location.webp",
+    iconSize: [38, 38],
+    iconAnchor: [22, 94],
+    popupAnchor: [-3, -76],
+  });
 
   useEffect(() => {
     if (position) {
@@ -31,7 +40,7 @@ function LocationMarker({ position, iconType }) {
   }
 
   return position === null ? null : (
-    <Marker position={position}>
+    <Marker position={position} icon={customIcon}>
       <Popup>You are here</Popup>
     </Marker>
   );

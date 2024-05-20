@@ -3,10 +3,15 @@ import RoundedWhiteContainer from "../common/modals/containers/rounded.white.con
 import { transactionData } from "@/app/config/test.config";
 import { truncateText } from "@/utils/helpers/truncate";
 import GetDirectionButton from "../buttons/get.directions";
+import { toast } from "sonner";
 
 const TransactionDetails = () => {
   const { address, paymentOption, amount } = transactionData;
   const truncatedAddress = truncateText(address, 50);
+
+  const handleTest = () => {
+    toast.info("This feature is coming soon!");
+  };
 
   return (
     <div className="flex w-full bg-gray-100">
@@ -21,7 +26,7 @@ const TransactionDetails = () => {
         </div>
         <div className="flex">
           <div className="flex items-center">
-            <GetDirectionButton />
+            <GetDirectionButton onClick={handleTest} />
           </div>
         </div>
       </RoundedWhiteContainer>
