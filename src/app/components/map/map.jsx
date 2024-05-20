@@ -1,24 +1,34 @@
+import React, { useEffect, useState } from "react";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import React, { useState } from "react";
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-  useMapEvents,
-} from "react-leaflet";
+import CurrentLocationButton from "../buttons/current.location.button";
+import { CustomerIcon, MerchantIcon, RiderIcon } from "./marker";
 
-function MapComponent() {
-  const [position, setPosition] = useState(null);
-  const map = useMapEvents({
-    click() {
-      map.locate();
-    },
-    locationfound(e) {
-      setPosition(e.latlng);
-      map.flyTo(e.latlng, map.getZoom());
-    },
-  });
+function LocationMarker({ position, iconType }) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (position) {
+      map.flyTo(position, map.getZoom());
+    }
+  }, [position, map]);
+
+  if (!position) return null;
+
+  let icon;
+  switch (iconType) {
+    case "rider":
+      icon = RiderIcon();
+      break;
+    case "merchant":
+      icon = MerchantIcon();
+      break;
+    case "customer":
+      icon = CustomerIcon();
+      break;
+    default:
+      icon = RiderIcon();
+  }
 
   return position === null ? null : (
     <Marker position={position}>
@@ -27,16 +37,58 @@ function MapComponent() {
   );
 }
 
-const App = () => {
+const MapComponent = ({
+  riderLocation,
+  merchantLocation,
+  customerLocation,
+}) => {
+  const [position, setPosition] = useState(null);
+
+  const locateUser = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setPosition([latitude, longitude]);
+        },
+        (error) => {
+          console.error(error.message);
+          alert(
+            "Unable to retrieve your location. Make sure location services are enabled."
+          );
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0,
+        }
+      );
+    } else {
+      alert("Geolocation is not supported by your browser.");
+    }
+  };
+
+  useEffect(() => {
+    locateUser();
+  }, []);
+
   return (
-    <MapContainer center={[48.8566, 2.3522]} zoom={13} scrollWheelZoom={true}>
+    <MapContainer
+      center={[14.676, 121.0437]}
+      zoom={20}
+      scrollWheelZoom={true}
+      style={{ height: "100%", width: "100%" }}
+    >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <MapComponent />
+      <LocationMarker position={position} iconType="rider" />
+      <LocationMarker position={merchantLocation} iconType="merchant" />
+      <LocationMarker position={customerLocation} iconType="customer" />
+      <CurrentLocationButton locateUser={locateUser} />
     </MapContainer>
   );
 };
 
-export default App;
+export default MapComponent;

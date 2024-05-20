@@ -10,7 +10,7 @@ const CircleButton = ({ onClick, icon, text, title }) => {
       >
         {icon && <span>{icon}</span>}
       </button>
-      <span className="uppercase text-sm my-4">{text}</span>
+      <span className="uppercase text-[12px] my-4">{text}</span>
     </div>
   );
 };

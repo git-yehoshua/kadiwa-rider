@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { MdOutlinePowerSettingsNew } from "react-icons/md";
 
-const SwitchButton = () => {
+const SwitchButton = ({ setOnlineStatus }) => {
   const [isOnline, setIsOnline] = useState(false);
 
   const toggleOnlineStatus = () => {
-    setIsOnline((prevStatus) => !prevStatus);
+    const newStatus = !isOnline;
+    setIsOnline(newStatus);
+    setOnlineStatus(newStatus); // Update online status in parent component
   };
 
   return (
