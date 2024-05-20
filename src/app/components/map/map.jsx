@@ -3,14 +3,54 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import CurrentLocationButton from "../buttons/current.location.button";
-import { CustomerIcon, MerchantIcon, RiderIcon } from "./marker";
+import greenLocMarker from "../../assets/loc.marker/current.location.webp";
+
+function DisplayPosition({ map }) {
+  const [position, setPosition] = useState(() => map.getCenter());
+
+  const onClick = useCallback(() => {
+    map.setView(center, zoom);
+  }, [map]);
+
+  const onMove = useCallback(() => {
+    setPosition(map.getCenter());
+  }, [map]);
+
+  useEffect(() => {
+    map.on("move", onMove);
+    return () => {
+      map.off("move", onMove);
+    };
+  }, [map, onMove]);
+
+  return (
+    <p>
+      latitude: {position.lat.toFixed(4)}, longitude: {position.lng.toFixed(4)}{" "}
+      <button onClick={onClick}>reset</button>
+    </p>
+  );
+}
 
 function LocationMarker({ position, iconType }) {
   const map = useMap();
 
   // Define a custom icon
   const customIcon = new L.Icon({
-    iconUrl: "src/app/assets/loc.marker/current.location.webp",
+    iconUrl: greenLocMarker,
+    iconSize: [38, 38],
+    iconAnchor: [22, 94],
+    popupAnchor: [-3, -76],
+  });
+
+  const merchantIcon = new L.Icon({
+    iconUrl: greenLocMarker,
+    iconSize: [38, 38],
+    iconAnchor: [22, 94],
+    popupAnchor: [-3, -76],
+  });
+
+  const riderIcon = new L.Icon({
+    iconUrl: greenLocMarker,
     iconSize: [38, 38],
     iconAnchor: [22, 94],
     popupAnchor: [-3, -76],
@@ -24,21 +64,6 @@ function LocationMarker({ position, iconType }) {
 
   if (!position) return null;
 
-  let icon;
-  switch (iconType) {
-    case "rider":
-      icon = RiderIcon();
-      break;
-    case "merchant":
-      icon = MerchantIcon();
-      break;
-    case "customer":
-      icon = CustomerIcon();
-      break;
-    default:
-      icon = RiderIcon();
-  }
-
   return position === null ? null : (
     <Marker position={position} icon={customIcon}>
       <Popup>You are here</Popup>
@@ -47,9 +72,8 @@ function LocationMarker({ position, iconType }) {
 }
 
 const MapComponent = ({
-  riderLocation,
-  merchantLocation,
-  customerLocation,
+  merchantLocation = [14.676, 121.0437],
+  customerLocation = [14.61, 121.0589],
 }) => {
   const [position, setPosition] = useState(null);
 
@@ -92,9 +116,9 @@ const MapComponent = ({
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <LocationMarker position={position} iconType="rider" />
-      <LocationMarker position={merchantLocation} iconType="merchant" />
-      <LocationMarker position={customerLocation} iconType="customer" />
+      <LocationMarker position={position} />
+      <LocationMarker position={merchantLocation} />
+      <LocationMarker position={customerLocation} />
       <CurrentLocationButton locateUser={locateUser} />
     </MapContainer>
   );
