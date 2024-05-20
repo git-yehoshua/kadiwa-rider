@@ -71,10 +71,12 @@ function LocationMarker({ position, iconType }) {
   );
 }
 
-const MapComponent = ({
-  merchantLocation = [14.676, 121.0437],
-  customerLocation = [14.61, 121.0589],
-}) => {
+const MapComponent = (
+  {
+    // merchantLocation = [14.676, 121.0437],
+    // customerLocation = [14.61, 121.0589],
+  }
+) => {
   const [position, setPosition] = useState(null);
 
   const locateUser = () => {
@@ -117,8 +119,8 @@ const MapComponent = ({
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <LocationMarker position={position} />
-      <LocationMarker position={merchantLocation} />
-      <LocationMarker position={customerLocation} />
+      {/* <LocationMarker position={merchantLocation} />
+      <LocationMarker position={customerLocation} /> */}
       <CurrentLocationButton locateUser={locateUser} />
     </MapContainer>
   );
