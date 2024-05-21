@@ -6,7 +6,7 @@ const NewJobAccepted = () => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/transaction");
+    navigate("/main/transaction");
   };
   return (
     <div

@@ -23,7 +23,7 @@ const SwitchButton = ({ setOnlineStatus }) => {
         type="button"
         onClick={toggleOnlineStatus}
       >
-        {isOnline ? null : "You're offline"}
+        {isOnline ? null : "Go online"}
         <MdOutlinePowerSettingsNew
           size={23}
           className={` ${isOnline ? "text-white" : "text-green-400 ml-2"}`}

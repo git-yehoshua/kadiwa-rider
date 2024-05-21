@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import BottomContainer from "../components/layout/bottom.container";
-import ButtonContainer from "../components/layout/button.container";
+import BottomContainer from "../../components/layout/bottom.container";
+import ButtonContainer from "../../components/layout/button.container";
 import { RiMessage3Fill } from "react-icons/ri";
-import CircleButton from "../components/buttons/circle.button";
+import CircleButton from "../../components/buttons/circle.button";
 import { RiLightbulbFlashFill } from "react-icons/ri";
 import { IoIosCall } from "react-icons/io";
 import { RiShoppingBag3Fill } from "react-icons/ri";
-import MapComponent from "../components/map/map";
-import OvalButton from "../components/buttons/oval.button";
-import StopsSegments from "../components/transactions/stops.segments";
-import TransactionDetails from "../components/transactions/transaction.details";
+import MapComponent from "../../components/map/map";
+import OvalButton from "../../components/buttons/oval.button";
+import StopsSegments from "../../components/transactions/stops.segments";
+import TransactionDetails from "../../components/transactions/transaction.details";
 import { toast } from "sonner";
 
 const TransactionPage = () => {

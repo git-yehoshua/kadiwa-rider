@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from "react";
-import SplashScreen from "../components/common/splash/splash";
-import BottomContainer from "../components/layout/bottom.container";
-import SwitchButton from "../components/buttons/switch.button";
-import ButtonContainer from "../components/layout/button.container";
+import SplashScreen from "../../components/common/splash/splash";
+import BottomContainer from "../../components/layout/bottom.container";
+import SwitchButton from "../../components/buttons/switch.button";
+import ButtonContainer from "../../components/layout/button.container";
 // import { FaCarRear } from "react-icons/fa6";
 // import { MdOutlineWork } from "react-icons/md";
 import { TfiLayoutPlaceholder } from "react-icons/tfi";
-import CircleButton from "../components/buttons/circle.button";
+import CircleButton from "../../components/buttons/circle.button";
 import { RiLightbulbFlashFill } from "react-icons/ri";
 import { RiRadioButtonLine } from "react-icons/ri";
-import ProfilePicture from "../components/user/profile.picture";
-import StarRating from "../components/user/star.rating";
-import EarningsButton from "../components/buttons/earnings";
-import MapComponent from "../components/map/map";
-import ButtonStatusIndicator from "../components/bottom.container/status.indicator";
-import NewJobAccepted from "../components/common/modals/new.job.accepted";
+import ProfilePicture from "../../components/user/profile.picture";
+import EarningsButton from "../../components/buttons/earnings";
+import MapComponent from "../../components/map/map";
+import ButtonStatusIndicator from "../../components/bottom.container/status.indicator";
+import NewJobAccepted from "../../components/common/modals/new.job.accepted";
 import { toast } from "sonner";
 
 const Home = () => {
@@ -50,7 +49,6 @@ const Home = () => {
             <EarningsButton onClick={handleTest} />
             <div className="flex-col m-2 items-center justify-center">
               <ProfilePicture />
-              <StarRating />
             </div>
           </div>
           <div className="flex items-center justify-center h-full">
