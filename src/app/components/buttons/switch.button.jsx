@@ -18,7 +18,7 @@ const SwitchButton = ({ setOnlineStatus }) => {
     >
       <button
         className={`flex items-center align-middle font-sans font-semibold text-center transition-all  text-xs p-3 rounded-full ${
-          isOnline ? "bg-green-400 border border-green-800" : "bg-gray-800"
+          isOnline ? "bg-green-500 border border-green-800" : "bg-gray-800"
         } text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none`}
         type="button"
         onClick={toggleOnlineStatus}

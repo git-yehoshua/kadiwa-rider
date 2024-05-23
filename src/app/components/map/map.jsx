@@ -71,13 +71,9 @@ function LocationMarker({ position, iconType }) {
   );
 }
 
-const MapComponent = (
-  {
-    // merchantLocation = [14.676, 121.0437],
-    // customerLocation = [14.61, 121.0589],
-  }
-) => {
+const MapComponent = () => {
   const [position, setPosition] = useState(null);
+  const [mapCenter, setMapCenter] = useState([14.676, 121.0437]);
 
   const locateUser = () => {
     if (navigator.geolocation) {
@@ -107,23 +103,31 @@ const MapComponent = (
     locateUser();
   }, []);
 
+  useEffect(() => {
+    if (position) {
+      // Once we get the position, we set the map center
+      setMapCenter(position);
+    }
+  }, [position]);
+
   return (
     <MapContainer
-      center={[14.676, 121.0437]}
+      center={position || mapCenter}
       zoom={20}
       scrollWheelZoom={true}
+      zoomControl={false}
       style={{ height: "100%", width: "100%" }}
+      className="flex-1 h-full w-full z-0"
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <LocationMarker position={position} />
-      {/* <LocationMarker position={merchantLocation} />
-      <LocationMarker position={customerLocation} /> */}
       <CurrentLocationButton locateUser={locateUser} />
     </MapContainer>
   );
 };
 
 export default MapComponent;
+//save

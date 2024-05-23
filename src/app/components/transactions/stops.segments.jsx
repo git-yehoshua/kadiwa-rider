@@ -4,8 +4,18 @@ const StopsSegments = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const buttons = [
-    { label: "Pickup Item", username: "Jollibee", disabled: false },
-    { label: "Dropoff Item", username: "Maria", disabled: true },
+    {
+      label: "Pickup",
+      username: "Jollibee",
+      color: "text-yellow-500",
+      disabled: false,
+    },
+    {
+      label: "Dropoff",
+      username: "Maria",
+      color: "text-green-500",
+      disabled: true,
+    },
   ];
 
   const handleButtonClick = (index) => {

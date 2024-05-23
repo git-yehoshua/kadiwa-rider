@@ -3,11 +3,11 @@ import { TbStarFilled } from "react-icons/tb";
 const StarRating = () => {
   return (
     <>
-      <div className="flex items-center">
-        <TbStarFilled className="text-yellow-400" />
-        <p className="ms-1 text-sm font-semibold text-gray-600 dark:text-white">
+      <div className="flex items-center bg-white rounded-full shadow-sm p-1">
+        <p className="me-1 text-[12px] font-semibold text-gray-600 dark:text-white">
           4.95
         </p>
+        <TbStarFilled className="text-yellow-400" />
       </div>
     </>
   );
