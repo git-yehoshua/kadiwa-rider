@@ -18,11 +18,14 @@ const TransactionPage = () => {
   const [jobAccepted, setJobAccepted] = useState(false);
   const [numberOfStops, setNumberOfStops] = useState(2);
   const [showTransactionDetails, setShowTransactionDetails] = useState(false);
+  const [centralLocation, setCentralLocation] = useState([
+    14.6384983, 121.0576078,
+  ]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowSplash(false);
-    }, 3000);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -77,7 +80,6 @@ const TransactionPage = () => {
     return [newLat, newLon];
   };
 
-  const centralLocation = [14.676, 121.0437];
   const stops = [
     {
       position: getNewCoordinates(
@@ -87,7 +89,7 @@ const TransactionPage = () => {
         0
       ), // 1.5 km north
       type: "merchant",
-      label: "Jollibee",
+      label: "Merchant",
     },
     {
       position: getNewCoordinates(
@@ -97,7 +99,7 @@ const TransactionPage = () => {
         Math.PI / 2
       ), // 1.5 km east
       type: "customer",
-      label: "Maria",
+      label: "Customer",
     },
   ];
 
@@ -111,7 +113,7 @@ const TransactionPage = () => {
       <StopsSegments />
       <TransactionDetails />
       <div className="flex items-center justify-center h-full">
-        <MapComponent stops={stops} />
+        <MapComponent stops={stops} centralLocation={centralLocation} />
       </div>
       <div className="h-fit z-auto">
         <BottomContainer>
