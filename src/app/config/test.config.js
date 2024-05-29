@@ -45,3 +45,21 @@ export const sampleOrders = [
     dropoffAddress: "2223 Potato Ave, Chip Town",
   },
 ];
+
+export const sampleItem = {
+  id: 1,
+  name: "Sample Item",
+  description: "This is a sample item for demonstration purposes.",
+  type: "pickup", // or "dropoff"
+  imgUrl: "https://via.placeholder.com/150",
+  merchant: {
+    name: "Merchant Name",
+    address: "123 Merchant St, Anytown, USA",
+    phone: "+1234567890",
+  },
+  customer: {
+    name: "Customer Name",
+    address: "456 Customer Ave, Anytown, USA",
+    phone: "+0987654321",
+  },
+};

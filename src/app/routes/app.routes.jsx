@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainRoutes from "./main.routes";
 import AuthRoutes from "./auth.routes";
+import BookingForm from "../pages/test/booking.input";
 // import QRScanner from "../pages/scan";
 // import Home from "../pages/home.screen";
 // import TransactionPage from "../pages/transaction.page";
@@ -12,6 +13,7 @@ function AppRoute() {
       <Routes>
         <Route path="/*" element={<AuthRoutes />} />
         <Route path="/main/*" element={<MainRoutes />} />
+        <Route path="/test.book" element={<BookingForm />} />
         {/* <Route path="/home" element={<Home />} />
         <Route path="/transaction" element={<TransactionPage />} />
         <Route path="/scan" element={<QRScanner />} /> */}

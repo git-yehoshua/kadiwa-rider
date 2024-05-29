@@ -28,7 +28,7 @@ const Home = () => {
     // Simulate loading time
     const timer = setTimeout(() => {
       setShowSplash(false);
-    }, 1000); // Show splash screen for 3 seconds
+    }, 1000);
 
     return () => clearTimeout(timer); // Cleanup timer on component unmount
   }, []);
@@ -66,12 +66,6 @@ const Home = () => {
         <div className="flex flex-col h-screen">
           {jobAccepted ? <NewJobAccepted /> : ""}
           <EarningsButton onClick={handleTest} />
-          {/* <div className="flex w-full justify-between items-center">
-            <EarningsButton onClick={handleTest} />
-            <div className="flex-col m-2 items-center justify-center">
-              <ProfilePicture />
-            </div>
-          </div> */}
           <div className="flex items-center justify-center h-full">
             <ProfilePicture onClick={handleSimulate} />
             <MapComponent />

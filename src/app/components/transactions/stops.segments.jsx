@@ -25,11 +25,9 @@ const StopsSegments = () => {
   const buttonClasses = (index, disabled) => {
     const baseClasses =
       "group flex flex-col items-start justify-start whitespace-nowrap py-2 align-middle font-semibold transition-all duration-300 ease-in-out disabled:cursor-not-allowed gap-1.5 w-full px-3 w-full";
-    const activeClasses =
-      "rounded-md bg-white shadow stroke-blue-700 text-slate-950 hover:stroke-blue-950 hover:text-blue-950";
-    const inactiveClasses =
-      "rounded-lg bg-transparent text-slate-500 stroke-blue-700 hover:stroke-blue-950 hover:text-blue-950";
-    const disabledClasses = "disabled:stroke-slate-400 disabled:text-slate-400";
+    const activeClasses = "rounded-md bg-white shadow blue-700";
+    const inactiveClasses = "rounded-lg bg-transparent text-slate-500 blue-700";
+    const disabledClasses = "disabled:slate-400 disabled:text-slate-400";
 
     return `${baseClasses} ${
       index === activeIndex ? activeClasses : inactiveClasses
@@ -42,7 +40,9 @@ const StopsSegments = () => {
         <button
           key={index}
           type="button"
-          className={buttonClasses(index, button.disabled)}
+          className={[buttonClasses(index, button.disabled), button.color].join(
+            " "
+          )}
           onClick={() => handleButtonClick(index)}
           disabled={button.disabled}
         >
