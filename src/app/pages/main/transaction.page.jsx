@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import BottomContainer from "../../components/layout/bottom.container";
 import ButtonContainer from "../../components/layout/button.container";
-import { RiMessage3Fill } from "react-icons/ri";
-import CircleButton from "../../components/buttons/circle.button";
-import { RiLightbulbFlashFill } from "react-icons/ri";
+import {
+  RiMessage3Fill,
+  RiLightbulbFlashFill,
+  RiShoppingBag3Fill,
+} from "react-icons/ri";
 import { IoIosCall } from "react-icons/io";
-import { RiShoppingBag3Fill } from "react-icons/ri";
+import CircleButton from "../../components/buttons/circle.button";
 import MapComponent from "../../components/map/map";
 import OvalButton from "../../components/buttons/oval.button";
 import StopsSegments from "../../components/transactions/stops.segments";
@@ -16,8 +18,8 @@ import OrderDetails from "@/app/components/transactions/order.details";
 const TransactionPage = () => {
   const [showSplash, setShowSplash] = useState(true);
   const [jobAccepted, setJobAccepted] = useState(false);
-  const [numberOfStops, setNumberOfStops] = useState(2);
   const [showTransactionDetails, setShowTransactionDetails] = useState(false);
+  const [autoAccept, setAutoAccept] = useState(false);
   const [centralLocation, setCentralLocation] = useState([
     14.6384983, 121.0576078,
   ]);
@@ -30,16 +32,9 @@ const TransactionPage = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleSimulate = () => {
-    setJobAccepted(true);
-  };
-
-  const handleTest = () => {
-    toast.info("This feature is coming soon!");
-  };
-
-  const handleSampleLoc = () => {
-    toast.info("This is only a sample don't mind it!");
+  const toggleAutoAccept = () => {
+    setAutoAccept((prevState) => !prevState);
+    toast.info(`Auto Accept is now ${!autoAccept ? "ON" : "OFF"}`);
   };
 
   const openOrderDetails = () => {
@@ -105,10 +100,8 @@ const TransactionPage = () => {
 
   return (
     <div className="flex flex-col h-screen">
-      {showTransactionDetails ? (
+      {showTransactionDetails && (
         <OrderDetails order={sampleOrder} onBack={handleBack} />
-      ) : (
-        ""
       )}
       <StopsSegments />
       <TransactionDetails />
@@ -120,37 +113,32 @@ const TransactionPage = () => {
           <ButtonContainer>
             <CircleButton
               icon={<IoIosCall size={20} />}
-              text={"call"}
-              onClick={handleTest}
+              text={"Call"}
+              onClick={() => toast.info("This feature is coming soon!")}
             />
             <CircleButton
               icon={<RiMessage3Fill size={20} className="scale-x-[-1]" />}
-              text={"message"}
-              onClick={handleTest}
+              text={"Message"}
+              onClick={() => toast.info("This feature is coming soon!")}
             />
             <CircleButton
               icon={<RiShoppingBag3Fill size={20} />}
-              text={"order details"}
+              text={"Order Details"}
               onClick={openOrderDetails}
             />
             <CircleButton
               icon={
-                <RiLightbulbFlashFill size={20} className="text-yellow-400" />
+                <RiLightbulbFlashFill
+                  size={20}
+                  className={autoAccept ? "text-yellow-400" : "text-gray-400"}
+                />
               }
               text={"Auto Accept"}
-              onClick={handleTest}
+              onClick={toggleAutoAccept}
             />
           </ButtonContainer>
           <div className="flex w-full">
-            <div className="flex flex-col items-center justify-center m-2">
-              <div className="flex flex-col rounded-full py-1 px-4 items-center justify-center bg-gray-800 text-yellow-50 text-xl border-[3px] border-gray-300 shadow-md">
-                {numberOfStops}
-                <span className="uppercase text-[12px] text-gray-100 font-semibold align-top">
-                  stops
-                </span>
-              </div>
-            </div>
-            <OvalButton text={"Coming Soon"} />
+            <OvalButton text={"Arrived at location"} />
           </div>
         </BottomContainer>
       </div>

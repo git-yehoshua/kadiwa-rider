@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
 import SplashScreen from "../../components/common/splash/splash";
 import BottomContainer from "../../components/layout/bottom.container";
-import SwitchButton from "../../components/buttons/switch.button";
 import ButtonContainer from "../../components/layout/button.container";
 import { FaMotorcycle } from "react-icons/fa6";
 import CircleButton from "../../components/buttons/circle.button";
 import { RiLightbulbFlashFill } from "react-icons/ri";
-import { RiRadioButtonLine } from "react-icons/ri";
 import { HiMiniHome } from "react-icons/hi2";
-import ButtonStatusIndicator from "../../components/layout/status.indicator";
 import NewJobAccepted from "../../components/common/modals/new.job.accepted";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +15,6 @@ import { sampleOrders } from "@/app/config/test.config";
 
 const BookingsPage = () => {
   const [showSplash, setShowSplash] = useState(true);
-  const [onlineStatus, setOnlineStatus] = useState(false);
   const [jobAccepted, setJobAccepted] = useState(false);
   const navigate = useNavigate();
 
@@ -58,18 +54,11 @@ const BookingsPage = () => {
             <h1 className="text-green-600 font-semibold">Accept Bookings</h1>
           </HeaderContainer>
           <div className="flex items-center justify-center h-full">
-            {/* <div className="flex w-full bg-white">
-              <HeaderContainer>
-                <h1 className="text-green-600 font-semibold">
-                  Accept Bookings
-                </h1>
-              </HeaderContainer>
-              <div className="flex flex-col w-full bg-yellow-50  h-screen overflow-scroll p-2">
-                <OrderItems />
-              </div>
-            </div> */}
             <div className="flex w-full h-[86%]">
-              <div className="flex flex-col w-full h-[88%] overflow-y-scroll">
+              <div
+                className="flex flex-col w-full h-[91%] overflow-y-scroll"
+                style={{ scrollbarWidth: "thin" }}
+              >
                 <OrderItems data={sampleOrders} />
               </div>
             </div>

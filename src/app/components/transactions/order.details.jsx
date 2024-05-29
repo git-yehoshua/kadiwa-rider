@@ -6,7 +6,7 @@ const OrderDetails = ({ order, onBack }) => {
     <div className="fixed bg-white z-10 inset-0 h-full">
       <OrderDetailsHeader onBack={onBack} />
       <div className="flex items-start justify-center h-screen overflow-y-scroll">
-        <div className="flex flex-col items-center justify-center w-full max-w-lg   p-6">
+        <div className="flex flex-col items-center justify-center w-full  p-6">
           {order ? (
             <>
               <div className="w-full">

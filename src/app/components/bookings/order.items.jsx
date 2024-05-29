@@ -7,7 +7,7 @@ const OrderItems = ({ data }) => {
     <>
       {data.map((item) => (
         <div
-          className="flex w-full p-4 shadow-md rounded-xl items-start justify-between border-2 border-gray-100 mb-4"
+          className="flex w-full p-4 shadow-md rounded-xl items-start justify-between border-2 border-gray-100 mb-4 cursor-pointer transition-all duration-200 ease-in-out hover:bg-gray-50"
           key={item.id}
         >
           <div className="flex flex-col">

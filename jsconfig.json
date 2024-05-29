@@ -3,7 +3,12 @@
     // ...
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@pages/*": ["./src/app/pages/*"],
+      "@config/*": ["./src/app/config/*"],
+      "@firebase.connection/firebase.db.connect": [
+        "./src/app/config/firebase.connection/firebase.db.connect.js"
+      ]
     }
     // ...
   }

@@ -50,7 +50,7 @@ const MapComponent = ({ stops }) => {
   return (
     <MapContainer
       center={position || mapCenter}
-      zoom={15}
+      zoom={14}
       scrollWheelZoom={true}
       zoomControl={false}
       style={{ height: "100%", width: "100%" }}
