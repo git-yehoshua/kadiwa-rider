@@ -1,35 +1,71 @@
 import { truncateText } from "@/utils/helpers/truncate";
 import React from "react";
 
-const OrderItems = ({ data }) => {
-  const maxTextLength = 25;
+const OrderItems = ({ data, onClick }) => {
+  const maxTextLength = 50;
+
   return (
     <>
-      {data.map((item) => (
-        <div
-          className="flex w-full p-4 shadow-md rounded-xl items-start justify-between border-2 border-gray-100 mb-4 cursor-pointer transition-all duration-200 ease-in-out hover:bg-gray-50"
-          key={item.id}
-        >
-          <div className="flex flex-col">
-            <span className="text-lg font-semibold">{item.itemName}</span>
-            <span className="text-sm text-gray-600">
-              Quantity: {item.quantity}
-            </span>
-            <span className="text-sm text-gray-600">Price: {item.price}</span>
-            <span className="text-sm text-gray-600 mt-2">
-              <strong>Pickup Address:</strong>
-              {truncateText(item.pickupAddress, maxTextLength)}
-            </span>
-            <span className="text-sm text-gray-600">
-              <strong>Dropoff Address:</strong>{" "}
-              {truncateText(item.dropoffAddress, maxTextLength)}
-            </span>
-          </div>
-          <button className="bg-green-500 text-white py-1 px-3 rounded-lg hover:bg-green-600">
-            Pick Order
-          </button>
+      {data.length === 0 ? (
+        <div className="flex items-center justify-center h-full text-gray-400 text-center font-semibold">
+          No orders available.
         </div>
-      ))}
+      ) : (
+        <>
+          {data.map(({ bookingId, bookingDetails }) => {
+            // Calculate total price for the booking
+            const totalPrice = bookingDetails.items.reduce((sum, item) => {
+              return sum + item.qty * parseFloat(item.price);
+            }, 0);
+
+            return (
+              <button
+                className="flex w-full p-4 shadow-md rounded-xl items-start text-start justify-between border-2 border-gray-100 mb-4 transition-all duration-200 ease-in-out hover:bg-gray-50"
+                key={bookingId}
+                onClick={() => onClick({ bookingId, bookingDetails })} // Pass the full item object to the onClick function
+              >
+                <div className="flex flex-col w-full">
+                  <div className="flex w-full justify-between">
+                    <div className="flex flex-col">
+                      <span className="text-lg font-semibold">
+                        {bookingDetails.customer.name}
+                      </span>
+                      <span className="text-sm text-gray-600">
+                        Phone: {bookingDetails.customer.phone}
+                      </span>
+                      <span className="text-sm text-gray-600 mt-2">
+                        Total Items:{" "}
+                        <strong>{bookingDetails.items.length}</strong>
+                      </span>
+                    </div>
+                    <span className="text-sm text-green-600 mt-2">
+                      Total Price:
+                      <strong className="text-lg ml-2">
+                        ${totalPrice.toFixed(2)}
+                      </strong>
+                    </span>
+                  </div>
+                  <hr className="my-2" />
+                  <span className="text-sm text-gray-600 mt-2">
+                    <strong>Pickup Address:</strong>{" "}
+                    {truncateText(
+                      bookingDetails.merchant.address,
+                      maxTextLength
+                    )}
+                  </span>
+                  <span className="text-sm text-gray-600">
+                    <strong>Dropoff Address:</strong>{" "}
+                    {truncateText(
+                      bookingDetails.customer.address,
+                      maxTextLength
+                    )}
+                  </span>
+                </div>
+              </button>
+            );
+          })}
+        </>
+      )}
     </>
   );
 };

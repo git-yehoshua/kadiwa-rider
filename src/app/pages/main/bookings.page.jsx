@@ -11,20 +11,33 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import HeaderContainer from "@/app/components/layout/header.container";
 import OrderItems from "@/app/components/bookings/order.items";
-import { sampleOrders } from "@/app/config/test.config";
+import transactionService from "@/app/services/transaction.service";
 
 const BookingsPage = () => {
   const [showSplash, setShowSplash] = useState(true);
   const [jobAccepted, setJobAccepted] = useState(false);
+  const [orders, setOrders] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Simulate loading time
     const timer = setTimeout(() => {
       setShowSplash(false);
-    }, 1000); // Show splash screen for 3 seconds
+    }, 1000);
 
-    return () => clearTimeout(timer); // Cleanup timer on component unmount
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        const data = await transactionService.BOOKING.getall();
+        setOrders(data);
+      } catch (error) {
+        console.error("Error fetching bookings:", error);
+      }
+    };
+
+    fetchBookings();
   }, []);
 
   const handleSimulate = () => {
@@ -36,11 +49,15 @@ const BookingsPage = () => {
   };
 
   const navToBookings = () => {
-    navigate("/main/bookings");
+    navigate("/bookings");
   };
 
   const navToHome = () => {
-    navigate("/main/home");
+    navigate("/home");
+  };
+
+  const openConfirmPickupDropoff = (item) => {
+    navigate(`/main/confirm/${item.bookingId}`);
   };
 
   return (
@@ -49,9 +66,11 @@ const BookingsPage = () => {
         <SplashScreen />
       ) : (
         <div className="flex flex-col h-screen">
-          {jobAccepted ? <NewJobAccepted /> : ""}
+          {jobAccepted && <NewJobAccepted />}
           <HeaderContainer>
-            <h1 className="text-green-600 font-semibold">Accept Bookings</h1>
+            <h1 className="text-green-600 text-center font-semibold">
+              Accept Bookings
+            </h1>
           </HeaderContainer>
           <div className="flex items-center justify-center h-full">
             <div className="flex w-full h-[86%]">
@@ -59,7 +78,7 @@ const BookingsPage = () => {
                 className="flex flex-col w-full h-[91%] overflow-y-scroll"
                 style={{ scrollbarWidth: "thin" }}
               >
-                <OrderItems data={sampleOrders} />
+                <OrderItems onClick={openConfirmPickupDropoff} data={orders} />
               </div>
             </div>
           </div>
