@@ -114,7 +114,9 @@ const TransactionPage = () => {
             <CircleButton
               icon={<IoIosCall size={20} />}
               text={"Call"}
-              onClick={() => toast.info("This feature is coming soon!")}
+              onClick={() =>
+                (window.location.href = `tel:${sampleOrder.customer.phone}`)
+              }
             />
             <CircleButton
               icon={<RiMessage3Fill size={20} className="scale-x-[-1]" />}

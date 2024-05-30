@@ -1,0 +1,80 @@
+{
+  "booking": {
+    "IreJ8ZvKC9": {
+      "customer": {
+        "address": "McDonald's, EDSA, Makati City, Philippines",
+        "customerId": "WXUAx5hbhx",
+        "name": "Sara",
+        "phone": "2367085194"
+      },
+      "items": [
+        {
+          "name": "Sayote",
+          "price": "17.04",
+          "productId": "71oeEmksw2",
+          "qty": 6
+        },
+        {
+          "name": "Egg",
+          "price": "74.97",
+          "productId": "4EeJnm0RR4",
+          "qty": 8
+        },
+        {
+          "name": "Bread",
+          "price": "21.86",
+          "productId": "VX8KmNzmQ3",
+          "qty": 9
+        },
+        {
+          "name": "Rice",
+          "price": "7.86",
+          "productId": "mLwgKTUefZ",
+          "qty": 9
+        },
+        {
+          "name": "Rice",
+          "price": "60.46",
+          "productId": "JbACvMp9wz",
+          "qty": 6
+        },
+        {
+          "name": "Banana",
+          "price": "31.78",
+          "productId": "QZTsp0RfuA",
+          "qty": 10
+        },
+        {
+          "name": "Sayote",
+          "price": "54.90",
+          "productId": "OWVl26dw2T",
+          "qty": 4
+        },
+        {
+          "name": "Milk",
+          "price": "78.25",
+          "productId": "PW9LNzd2pv",
+          "qty": 7
+        },
+        {
+          "name": "Banana",
+          "price": "76.22",
+          "productId": "vVi184ns3G",
+          "qty": 6
+        },
+        {
+          "name": "Beef Rump",
+          "price": "77.87",
+          "productId": "tXEB6OYqJx",
+          "qty": 4
+        }
+      ],
+      "merchant": {
+        "address": "12 Kadiwa Store, Quezon City, Philippines",
+        "merchantId": "PYfHEvxNRT",
+        "name": "Mike",
+        "phone": "7932108654"
+      }
+    }
+  }
+}
