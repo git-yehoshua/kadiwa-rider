@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import BottomContainer from "../../components/layout/bottom.container";
 import ButtonContainer from "../../components/layout/button.container";
 import {
@@ -12,17 +13,24 @@ import MapComponent from "../../components/map/map";
 import OvalButton from "../../components/buttons/oval.button";
 import StopsSegments from "../../components/transactions/stops.segments";
 import TransactionDetails from "../../components/transactions/transaction.details";
+import OrderDetails from "../../components/transactions/order.details";
+import transactionService from "../../services/transaction.service";
 import { toast } from "sonner";
-import OrderDetails from "@/app/components/transactions/order.details";
+import QRScanner from "../scan";
 
 const TransactionPage = () => {
+  const { transactionId } = useParams();
   const [showSplash, setShowSplash] = useState(true);
   const [jobAccepted, setJobAccepted] = useState(false);
   const [showTransactionDetails, setShowTransactionDetails] = useState(false);
   const [autoAccept, setAutoAccept] = useState(false);
+  const [showScanner, setShowScanner] = useState(false);
   const [centralLocation, setCentralLocation] = useState([
     14.6384983, 121.0576078,
   ]);
+  const [transactionData, setTransactionData] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -31,6 +39,26 @@ const TransactionPage = () => {
 
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    const fetchTransactionData = async () => {
+      try {
+        const data = await transactionService.BOOKING.get(transactionId);
+        if (data) {
+          setTransactionData(data);
+        } else {
+          toast.error("Transaction not found");
+        }
+      } catch (error) {
+        console.error("Error fetching transaction data:", error);
+        toast.error("Error fetching transaction data");
+      }
+    };
+
+    if (transactionId) {
+      fetchTransactionData();
+    }
+  }, [transactionId]);
 
   const toggleAutoAccept = () => {
     setAutoAccept((prevState) => !prevState);
@@ -45,25 +73,12 @@ const TransactionPage = () => {
     setShowTransactionDetails(false);
   };
 
-  const sampleOrder = {
-    id: "12345",
-    customer: {
-      name: "John Doe",
-      phone: "+123456789",
-    },
-    items: [
-      { name: "Item 1", quantity: 2, price: 10 },
-      { name: "Item 2", quantity: 1, price: 20 },
-    ],
-    total: 40,
-    address: "123 Main St, Anytown, USA",
-    status: "Processing",
+  const handleCloseScanner = () => {
+    setShowScanner(false);
   };
 
-  // Helper function to calculate new coordinates
   const getNewCoordinates = (lat, lon, distance, angle) => {
-    const earthRadius = 6371; // Earth radius in kilometers
-
+    const earthRadius = 6371;
     const newLat =
       lat + (distance / earthRadius) * (180 / Math.PI) * Math.cos(angle);
     const newLon =
@@ -71,9 +86,31 @@ const TransactionPage = () => {
       (distance / earthRadius) *
         (180 / Math.PI) *
         (Math.sin(angle) / Math.cos((lat * Math.PI) / 180));
-
     return [newLat, newLon];
   };
+
+  const handleScanResult = (scannedData) => {
+    // Handle the scanned data here and update state accordingly
+    console.log("Scanned data:", scannedData);
+    setShowScanner(false);
+    setActiveIndex(1); // Enable the dropoff step
+  };
+
+  if (showSplash) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        Loading...
+      </div>
+    );
+  }
+
+  if (!transactionData) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        No transaction data found.
+      </div>
+    );
+  }
 
   const stops = [
     {
@@ -82,7 +119,7 @@ const TransactionPage = () => {
         centralLocation[1],
         1.5,
         0
-      ), // 1.5 km north
+      ),
       type: "merchant",
       label: "Merchant",
     },
@@ -92,30 +129,44 @@ const TransactionPage = () => {
         centralLocation[1],
         1.5,
         Math.PI / 2
-      ), // 1.5 km east
+      ),
       type: "customer",
       label: "Customer",
     },
   ];
 
+  const handleArrivedClick = () => {
+    navigate(`/main/scan`);
+  };
+
   return (
     <div className="flex flex-col h-screen">
       {showTransactionDetails && (
-        <OrderDetails order={sampleOrder} onBack={handleBack} />
+        <OrderDetails order={transactionData} onBack={handleBack} />
       )}
-      <StopsSegments />
-      <TransactionDetails />
+      {showScanner && (
+        <QRScanner onScan={handleScanResult} onClose={handleCloseScanner} />
+      )}
+      <StopsSegments
+        transactionData={transactionData}
+        activeIndex={activeIndex}
+        setActiveIndex={setActiveIndex}
+      />
+      <TransactionDetails
+        transactionData={transactionData}
+        activeIndex={activeIndex}
+      />
       <div className="flex items-center justify-center h-full">
         <MapComponent stops={stops} centralLocation={centralLocation} />
       </div>
       <div className="h-fit z-auto">
-        <BottomContainer>
+        <BottomContainer showLocationButton={true}>
           <ButtonContainer>
             <CircleButton
               icon={<IoIosCall size={20} />}
               text={"Call"}
               onClick={() =>
-                (window.location.href = `tel:${sampleOrder.customer.phone}`)
+                (window.location.href = `tel:${transactionData.customer.phone}`)
               }
             />
             <CircleButton
@@ -140,7 +191,10 @@ const TransactionPage = () => {
             />
           </ButtonContainer>
           <div className="flex w-full">
-            <OvalButton text={"Arrived at location"} />
+            <OvalButton
+              text={"Arrived at location"}
+              onClick={() => setShowScanner(true)}
+            />
           </div>
         </BottomContainer>
       </div>

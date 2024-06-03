@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import CurrentLocationButton from "../buttons/current.location.button";
 import LocationMarker from "./loc.marker";
+import BottomContainer from "../layout/bottom.container";
+import CurrentLocationButton from "../buttons/current.location.button";
 
 const MapComponent = ({ stops }) => {
   const [position, setPosition] = useState(null);
@@ -61,7 +62,7 @@ const MapComponent = ({ stops }) => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <LocationMarker positions={positions} />
-      <CurrentLocationButton locateUser={locateUser} />
+      {/* <CurrentLocationButton locateUser={locateUser} /> */}
     </MapContainer>
   );
 };

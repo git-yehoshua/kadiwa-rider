@@ -53,7 +53,7 @@ const BookingsPage = () => {
   };
 
   const navToHome = () => {
-    navigate("/home");
+    navigate("/main/home");
   };
 
   const openConfirmPickupDropoff = (item) => {
@@ -69,7 +69,7 @@ const BookingsPage = () => {
           {jobAccepted && <NewJobAccepted />}
           <HeaderContainer>
             <h1 className="text-green-600 text-center font-semibold">
-              Accept Bookings
+              Choose Bookings
             </h1>
           </HeaderContainer>
           <div className="flex items-center justify-center h-full">
