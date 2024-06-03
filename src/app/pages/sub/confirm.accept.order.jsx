@@ -6,7 +6,7 @@ import SquareButton from "@/app/components/buttons/square.button";
 import HeaderContainer from "@/app/components/layout/header.container";
 import ItemContainer from "@/app/components/layout/item.container";
 
-const ConfirmPickupDropoff = () => {
+const ConfirmAcceptOrder = () => {
   const { bookingId } = useParams();
   const [item, setItem] = useState(null);
   const [displayedItems, setDisplayedItems] = useState([]);
@@ -15,13 +15,17 @@ const ConfirmPickupDropoff = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchBookingDetails = async () => {
       try {
         const bookingDetails = await transactionService.BOOKING.get(bookingId);
-        setItem(bookingDetails);
-        if (bookingDetails) {
-          setDisplayedItems(bookingDetails.items.slice(0, 3));
-          setItemsIndex(5);
+        if (isMounted) {
+          setItem(bookingDetails);
+          if (bookingDetails) {
+            setDisplayedItems(bookingDetails.items.slice(0, 3));
+            setItemsIndex(3);
+          }
         }
       } catch (error) {
         console.error("Error fetching booking details:", error);
@@ -31,39 +35,35 @@ const ConfirmPickupDropoff = () => {
     if (bookingId) {
       fetchBookingDetails();
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, [bookingId]);
 
   const loadMoreItems = () => {
     setLoading(true);
     setTimeout(() => {
       const nextItems = item.items.slice(itemsIndex, itemsIndex + 3);
-      setDisplayedItems([...displayedItems, ...nextItems]);
-      setItemsIndex(itemsIndex + 3);
+      setDisplayedItems((prevItems) => [...prevItems, ...nextItems]);
+      setItemsIndex((prevIndex) => prevIndex + 3);
       setLoading(false);
-    }, 1000); // Simulating a delay for loading
+    }, 1000);
   };
 
-  // const buttonText = item
-  //   ? item.isPickup
-  //     ? "Confirm Pickup"
-  //     : item.isDropoff
-  //     ? "Confirm Dropoff"
-  //     : "No Item"
-  //   : "bro";
-
   const handleClick = () => {
-    navigate(`/transaction/${bookingId}/confirm`);
+    navigate(`/main/${bookingId}/transaction`);
   };
 
   return (
-    <div className="fixed bg-white z-10 inset-0 h-full">
+    <div className="fixed bg-white z-10 inset-0 h-full min-h-screen">
       <HeaderContainer>
         <div className="flex w-full">
           <div className="absolute text-green-600">
             <BackButton onBack={() => navigate(-1)} />
           </div>
           <h1 className="flex w-full items-center justify-center text-green-600 font-semibold">
-            Confirm Item
+            Confirm Accept
           </h1>
         </div>
       </HeaderContainer>
@@ -73,7 +73,7 @@ const ConfirmPickupDropoff = () => {
             className="flex items-start justify-center w-full h-[91%] overflow-y-scroll"
             style={{ scrollbarWidth: "none" }}
           >
-            <div className="flex flex-col items-center justify-center w-full p-2">
+            <div className="flex flex-col items-center justify-center w-full p-2 gap-2">
               {item ? (
                 <>
                   <div className="flex w-full items-start">
@@ -162,12 +162,11 @@ const ConfirmPickupDropoff = () => {
           </div>
         </div>
       </div>
-
       <div className="absolute w-full bottom-2">
         <div className="flex w-full items-center justify-center p-4">
           <SquareButton
             onClick={handleClick}
-            text={"Accept Order"}
+            text={"Accept Booking"}
             disabled={!item}
           />
         </div>
@@ -176,4 +175,4 @@ const ConfirmPickupDropoff = () => {
   );
 };
 
-export default ConfirmPickupDropoff;
+export default ConfirmAcceptOrder;

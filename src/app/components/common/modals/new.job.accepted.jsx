@@ -1,13 +1,15 @@
-import React from "react";
+import transactionService from "@/app/services/transaction.service";
+import React, { useEffect, useState } from "react";
 import { MdCheckCircle } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const NewJobAccepted = () => {
   const navigate = useNavigate();
 
-  const handleClick = () => {
-    navigate("/main/transaction");
+  const handleClick = (item) => {
+    navigate(`/main/${item.bookingId}/transaction`);
   };
+
   return (
     <div
       className="fixed inset-0 flex flex-col items-center justify-center text-white p-4 gap-3 bg-gray-800 bg-opacity-80 transition-opacity duration-300 ease-in-out z-[2000]"

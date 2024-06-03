@@ -12,6 +12,7 @@ const ProfilePicture = ({ onClick }) => {
               src={dummyProfile.avatarSrc}
               alt="User dropdown"
               className="rounded-full max-w-[55px] max-h-[55px] border-gray-300 border-[3px] hover:border-green-200 transition-all ease-in-out duration-150 active:border-green-300"
+              style={{ objectFit: "cover", objectPosition: "center" }}
             />
           </button>
           {/* <StarRating /> */}

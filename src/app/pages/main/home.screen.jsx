@@ -71,7 +71,7 @@ const Home = () => {
             <MapComponent />
           </div>
           <div className="h-fit z-auto">
-            <BottomContainer>
+            <BottomContainer showLocationButton={true}>
               <SwitchButton setOnlineStatus={setOnlineStatus} />
               <div className="flex flex-col z-auto gap-2">
                 {onlineStatus ? (

@@ -1,32 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const StopsSegments = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
+const StopsSegments = ({ transactionData, setActiveIndex, activeIndex }) => {
+  const [buttons, setButtons] = useState([]);
 
-  const buttons = [
-    {
-      label: "Pickup",
-      username: "Jollibee",
-      color: "text-yellow-500",
-      disabled: false,
-    },
-    {
-      label: "Dropoff",
-      username: "Maria",
-      color: "text-green-500",
-      disabled: true,
-    },
-  ];
+  useEffect(() => {
+    if (transactionData) {
+      setButtons([
+        {
+          label: "Pickup",
+          username: transactionData.merchant.name,
+          color: "text-yellow-500",
+          disabled: false,
+        },
+        {
+          label: "Dropoff",
+          username: transactionData.customer.name,
+          color: "text-green-500",
+          disabled: true, // Initially disabled
+        },
+      ]);
+    }
+  }, [transactionData]);
 
   const handleButtonClick = (index) => {
     setActiveIndex(index);
+    if (index === 0) {
+      // Logic to handle Pickup completion and enable Dropoff
+      setButtons((prevButtons) =>
+        prevButtons.map((button, i) =>
+          i === 1 ? { ...button, disabled: false } : button
+        )
+      );
+    }
   };
 
   const buttonClasses = (index, disabled) => {
     const baseClasses =
       "group flex flex-col items-start justify-start whitespace-nowrap py-2 align-middle font-semibold transition-all duration-300 ease-in-out disabled:cursor-not-allowed gap-1.5 w-full px-3 w-full";
-    const activeClasses = "rounded-md bg-white shadow blue-700";
-    const inactiveClasses = "rounded-lg bg-transparent text-slate-500 blue-700";
+    const activeClasses = "rounded-md bg-white shadow";
+    const inactiveClasses = "rounded-lg bg-transparent text-slate-500";
     const disabledClasses = "disabled:slate-400 disabled:text-slate-400";
 
     return `${baseClasses} ${

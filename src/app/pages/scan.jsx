@@ -2,10 +2,11 @@ import { BrowserMultiFormatReader } from "@zxing/library";
 import React, { useRef, useEffect, useState } from "react";
 import { IoCloseOutline } from "react-icons/io5";
 
-const QRScanner = ({ onScan }) => {
+const QRScanner = ({ onScan, onClose }) => {
   const videoRef = useRef(null);
   const codeReader = new BrowserMultiFormatReader();
   const [scannedData, setScannedData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const startScanner = async () => {
@@ -21,12 +22,15 @@ const QRScanner = ({ onScan }) => {
           { formats: ["QR_CODE", "CODE_128"] }
         );
 
+        setLoading(false); // Set loading to false once the scanner is ready
+
         return () => {
           stopStream(stream);
           codeReader.reset();
         };
       } catch (error) {
         console.error("Error starting scanner:", error);
+        setLoading(false); // Ensure loading is set to false in case of an error
       }
     };
 
@@ -67,7 +71,12 @@ const QRScanner = ({ onScan }) => {
   };
 
   return (
-    <div className="relative w-full h-screen flex flex-col items-center justify-center">
+    <div className="fixed z-[9999] w-full h-screen flex flex-col items-center justify-center bg-black">
+      {loading && (
+        <div className="absolute inset-0 flex items-center justify-center z-20">
+          <span className="text-white text-lg">Loading Scanner...</span>
+        </div>
+      )}
       <video
         ref={videoRef}
         className="object-cover w-full h-full"
@@ -79,7 +88,12 @@ const QRScanner = ({ onScan }) => {
           Scan code
         </span>
         <span className="fixed text-white top-5 right-5">
-          <IoCloseOutline size={30} />
+          <button
+            className="p-2 bg-transparent rounded-full transition-all duration-200 ease-in-out  focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-50"
+            onClick={onClose}
+          >
+            <IoCloseOutline size={30} />
+          </button>
         </span>
         <div className="relative w-64 h-64">
           <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-white rounded-tl-3xl"></div>
