@@ -35,11 +35,12 @@ const Home = () => {
 
   const toggleAutoAccept = () => {
     setAutoAccept((prevState) => !prevState);
-    if (!autoAccept) {
-      toast.info("Auto Accept is now ON");
-    } else {
-      toast.info("Auto Accept is now OFF");
-    }
+    //
+    toast.info("This feature is coming soon!");
+  };
+
+  const handleLocateTest = () => {
+    setAutoAccept((prevState) => !prevState);
   };
 
   const handleSimulate = () => {
@@ -69,13 +70,16 @@ const Home = () => {
       ) : (
         <div className="flex flex-col h-screen">
           {jobAccepted ? <NewJobAccepted /> : ""}
-          {/* <EarningsButton onClick={handleTest} /> */}
+          <EarningsButton onClick={handleTest} />
           <div className="flex items-center justify-center h-full">
             <ProfilePicture onClick={navToProfile} />
             <MapComponent />
           </div>
           <div className="h-fit z-auto">
-            <BottomContainer showLocationButton={true}>
+            <BottomContainer
+              showLocationButton={true}
+              locateUser={handleLocateTest}
+            >
               <SwitchButton setOnlineStatus={setOnlineStatus} />
               <div className="flex flex-col z-auto gap-2">
                 {onlineStatus ? (

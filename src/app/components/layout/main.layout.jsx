@@ -24,9 +24,7 @@ function MainLayout({ children, pageName, onBack }) {
           </div>
         </HeaderContainer>
       </div>
-      <main
-        className={`p-3 md:px-10 2xl:container mx-auto space-y-5 mb-20 mt-16 `}
-      >
+      <main className={`p-3 md:px-10 2xl:container mx-auto space-y-5 mt-16 `}>
         {children}
       </main>
       {/* <BottomNav /> */}
