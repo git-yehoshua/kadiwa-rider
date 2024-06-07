@@ -62,7 +62,12 @@ const TransactionPage = () => {
 
   const toggleAutoAccept = () => {
     setAutoAccept((prevState) => !prevState);
-    toast.info(`Auto Accept is now ${!autoAccept ? "ON" : "OFF"}`);
+    // toast.info(`Auto Accept is now ${!autoAccept ? "ON" : "OFF"}`);
+    toast.info("This feature is coming soon!");
+  };
+
+  const handleTestLocation = () => {
+    setAutoAccept((prevState) => !prevState);
   };
 
   const openOrderDetails = () => {
@@ -160,7 +165,10 @@ const TransactionPage = () => {
         <MapComponent stops={stops} centralLocation={centralLocation} />
       </div>
       <div className="h-fit z-auto">
-        <BottomContainer showLocationButton={true}>
+        <BottomContainer
+          showLocationButton={true}
+          locateUser={handleTestLocation}
+        >
           <ButtonContainer>
             <CircleButton
               icon={<IoIosCall size={20} />}
