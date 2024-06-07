@@ -51,7 +51,7 @@ const ProfilePage = () => {
           />
           <SmallCard
             icon={<BsBagCheck size={30} />}
-            title={"Bookings accepted"}
+            title={"Bookings completed"}
             value={"0"}
             iconColor={"text-green-500"}
           />
