@@ -9,6 +9,7 @@ import SmallCard from "@/app/components/cardss/dashboard.small.card";
 import { BsBagCheck } from "react-icons/bs";
 import { LiaCoinsSolid } from "react-icons/lia";
 import ProfileInfoCard from "@/app/components/cardss/profile.info.card";
+import { mockedUserData } from "@/app/test/mock.data";
 
 const ProfilePage = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -37,7 +38,7 @@ const ProfilePage = () => {
 
   return (
     <MainLayout pageName={"Account"}>
-      <ProfileCard userData={userData} />
+      <ProfileCard userData={mockedUserData} />
       <div className="flex flex-col xl:flex-row gap-5">
         <label htmlFor="label" className="text-gray-500">
           Daily Achievements
@@ -59,7 +60,7 @@ const ProfilePage = () => {
         <label htmlFor="label" className="text-gray-500">
           Manage profile
         </label>
-        <ProfileInfoCard user={userData} />
+        <ProfileInfoCard user={mockedUserData} />
       </div>
     </MainLayout>
   );
