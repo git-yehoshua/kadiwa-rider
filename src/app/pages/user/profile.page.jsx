@@ -37,7 +37,7 @@ const ProfilePage = () => {
 
   return (
     <MainLayout pageName={"Account"}>
-      {userData && <ProfileCard userData={userData} />}
+      <ProfileCard userData={userData} />
       <div className="flex flex-col xl:flex-row gap-5">
         <label htmlFor="label" className="text-gray-500">
           Daily Achievements
@@ -59,7 +59,7 @@ const ProfilePage = () => {
         <label htmlFor="label" className="text-gray-500">
           Manage profile
         </label>
-        {userData && <ProfileInfoCard user={userData} />}
+        <ProfileInfoCard user={userData} />
       </div>
     </MainLayout>
   );
