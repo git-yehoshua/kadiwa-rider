@@ -63,7 +63,7 @@ const ConfirmAcceptOrder = () => {
             <BackButton onBack={() => navigate(-1)} />
           </div>
           <h1 className="flex w-full items-center justify-center text-green-600 font-semibold">
-            Confirm Accept
+            Accept Booking
           </h1>
         </div>
       </HeaderContainer>

@@ -1,16 +1,120 @@
+import EyeToggleButton from "@/app/components/buttons/eye.toggle.button";
 import OvalButton from "@/app/components/buttons/oval.button";
+import FloatPlaceholderInput from "@/app/components/input/float.placeholder.input";
 import { asset } from "@/app/config/asset.config";
-import React from "react";
+import { signInWithEmailAndPasswordFunc } from "@/app/services/firebase/auth.service";
+import userService from "@/app/services/firebase/user.service";
+import { getnsaveDeviceInfo } from "@/app/services/utils/device.detector";
+import { saveDataToLocal } from "@/app/services/utils/localstorage.service";
+import React, { useEffect, useState } from "react";
 import { FaFacebook } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
+const deviceInfo = getnsaveDeviceInfo();
 
-const Signin = () => {
+const Signin = ({ hideLogin }) => {
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [isDanger, setIsDanger] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [showLazyLoading, setShowLazyLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false); // Add this state
   const navigate = useNavigate();
+  const [userData, setUserData] = useState({});
+  const deviceId = deviceInfo.deviceID;
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userDetails = await userService.RIDER.getall();
+        setUserData(userDetails);
+      } catch (error) {
+        console.error("Error fetching user details: ", error);
+      }
+    };
 
-  const handleLogin = () => {
+    fetchUserData();
+  }, []);
+
+  useEffect(() => {
+    const fetchUserAndVerifyDevice = async () => {
+      try {
+        const users = await userService.RIDER.getall();
+        console.log(users);
+
+        console.log(deviceId);
+        const matchedUser = await userService.isThis.deviceOnline(
+          deviceId,
+          users
+        );
+        console.log(matchedUser);
+        if (matchedUser) {
+          setIsSuccess(true);
+          setShowModal(true);
+          setShowLazyLoading(true);
+          setTimeout(function () {
+            hideLogin();
+            saveDataToLocal("uid", matchedUser);
+            navigate("/main/home");
+          }, 3000);
+          return;
+        }
+      } catch (error) {
+        console.error(
+          "Error fetching user details or verifying device: ",
+          error
+        );
+      }
+    };
+
+    fetchUserAndVerifyDevice();
+  }, [deviceInfo.deviceID]);
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    const isPhoneNumberValid = phone.length === 11;
+    const isPasswordValid = password.length >= 8;
+
+    if (isPhoneNumberValid && isPasswordValid) {
+      try {
+        // Sign in with Firebase
+        const getemail = userService.function.getEmailByPhone(phone, userData);
+        const user = await signInWithEmailAndPasswordFunc(getemail, password);
+
+        // Set login success state and show modal
+        setIsSuccess(true);
+        setShowModal(true);
+        const updateDeviceStatus = await userService.RIDER.device.updateStatus(
+          user.uid,
+          deviceId,
+          true
+        );
+        console.log(updateDeviceStatus);
+
+        setTimeout(() => {
+          // setShowLazyLoading(true);
+          setTimeout(function () {
+            hideLogin();
+            saveDataToLocal("uid", user.uid);
+            navigate("/main/home");
+          }, 3000);
+        }, 900);
+      } catch (error) {
+        setIsSuccess(false);
+        setIsDanger(true);
+        console.error("Sign-in error:", error);
+      }
+    } else {
+      setIsDanger(true);
+    }
+  };
+
+  const handleTestLogin = () => {
     navigate("/main/home");
   };
+
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <div className="flex flex-col items-center justify-center sm:w-[80%] lg:w-1/3  md:w-1/2">
@@ -25,38 +129,36 @@ const Signin = () => {
             Login to your account
           </p>
         </span>
-        <form action="" className="flex flex-col w-full gap-2 py-3 px-8">
-          <div className="relative w-full min-w-[200px] h-full">
-            <input
-              className="peer w-full h-full bg-transparent text-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-gray-400 placeholder-shown:border-t-gray-400 border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-gray-400 focus:border-green-500"
-              type="text"
-              id="emailPhone"
-              // value={folderName}
-              // onChange={(e) => setFolderName(e.target.value)}
-              placeholder=" "
-              required
-            />
-            <label className="flex w-full h-full select-none pointer-events-none absolute left-0 font-normal !overflow-visible truncate peer-placeholder-shown:text-gray-500 leading-tight peer-focus:leading-tight peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-gray-500 transition-all -top-1.5 peer-placeholder-shown:text-sm text-[11px] peer-focus:text-[11px] before:content[' '] before:block before:box-border before:w-2.5 before:h-1.5 before:mt-[6.5px] before:mr-1 peer-placeholder-shown:before:border-transparent before:rounded-tl-md before:border-t peer-focus:before:border-t-2 before:border-l peer-focus:before:border-l-2 before:pointer-events-none before:transition-all peer-disabled:before:border-transparent after:content[' '] after:block after:flex-grow after:box-border after:w-2.5 after:h-1.5 after:mt-[6.5px] after:ml-1 peer-placeholder-shown:after:border-transparent after:rounded-tr-md after:border-t peer-focus:after:border-t-2 after:border-r peer-focus:after:border-r-2 after:pointer-events-none after:transition-all peer-disabled:after:border-transparent peer-placeholder-shown:leading-[3.75] text-gray-500 peer-focus:text-gray-900 before:border-gray-400 peer-focus:before:!border-green-500 after:border-gray-400 peer-focus:after:!border-green-500">
-              Email or phone
-            </label>
-          </div>
+        <form
+          action=""
+          className="flex flex-col w-full gap-2 py-3 sm:px-4 md:px-8"
+        >
+          <FloatPlaceholderInput
+            type="text"
+            id="emailPhone"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            autoComplete="email"
+          />
 
-          <div className="relative w-full min-w-[200px] h-10">
-            <input
-              className="peer w-full h-full bg-transparent text-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-gray-400 placeholder-shown:border-t-gray-400 border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-gray-400 focus:border-green-500"
-              type="text"
+          <div className="flex w-full">
+            <FloatPlaceholderInput
+              type={showPassword ? "text" : "password"}
               id="password"
-              // value={folderName}
-              // onChange={(e) => setFolderName(e.target.value)}
-              placeholder=" "
-              required
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="password"
             />
-            <label className="flex w-full h-full select-none pointer-events-none absolute left-0 font-normal !overflow-visible truncate peer-placeholder-shown:text-gray-500 leading-tight peer-focus:leading-tight peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-gray-500 transition-all -top-1.5 peer-placeholder-shown:text-sm text-[11px] peer-focus:text-[11px] before:content[' '] before:block before:box-border before:w-2.5 before:h-1.5 before:mt-[6.5px] before:mr-1 peer-placeholder-shown:before:border-transparent before:rounded-tl-md before:border-t peer-focus:before:border-t-2 before:border-l peer-focus:before:border-l-2 before:pointer-events-none before:transition-all peer-disabled:before:border-transparent after:content[' '] after:block after:flex-grow after:box-border after:w-2.5 after:h-1.5 after:mt-[6.5px] after:ml-1 peer-placeholder-shown:after:border-transparent after:rounded-tr-md after:border-t peer-focus:after:border-t-2 after:border-r peer-focus:after:border-r-2 after:pointer-events-none after:transition-all peer-disabled:after:border-transparent peer-placeholder-shown:leading-[3.75] text-gray-500 peer-focus:text-gray-900 before:border-gray-400 peer-focus:before:!border-green-500 after:border-gray-400 peer-focus:after:!border-green-500">
-              Password
-            </label>
+
+            <EyeToggleButton
+              onClick={() => setShowPassword(!showPassword)}
+              showPassword={showPassword}
+            />
           </div>
 
-          <OvalButton text={"Login"} onClick={handleLogin} />
+          <OvalButton text={"Login"} onClick={handleTestLogin} />
         </form>
         <div className="flex w-full items-center justify-center my-4">
           <hr className="w-full bg-gray-400" />

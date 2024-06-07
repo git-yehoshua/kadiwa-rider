@@ -2,7 +2,7 @@ import React from "react";
 import RoundedWhiteContainer from "../common/modals/containers/rounded.white.container";
 import GetDirectionButton from "../buttons/get.directions";
 import { toast } from "sonner";
-import { truncateText } from "@/utils/helpers/truncate";
+import { truncateText } from "@/app/helpers/truncate";
 
 const TransactionDetails = ({ transactionData, activeIndex }) => {
   if (!transactionData) return null;

@@ -58,6 +58,10 @@ const Home = () => {
     navigate("/main/home");
   };
 
+  const navToProfile = () => {
+    navigate("/main/profile");
+  };
+
   return (
     <>
       {showSplash ? (
@@ -65,9 +69,9 @@ const Home = () => {
       ) : (
         <div className="flex flex-col h-screen">
           {jobAccepted ? <NewJobAccepted /> : ""}
-          <EarningsButton onClick={handleTest} />
+          {/* <EarningsButton onClick={handleTest} /> */}
           <div className="flex items-center justify-center h-full">
-            <ProfilePicture onClick={handleSimulate} />
+            <ProfilePicture onClick={navToProfile} />
             <MapComponent />
           </div>
           <div className="h-fit z-auto">

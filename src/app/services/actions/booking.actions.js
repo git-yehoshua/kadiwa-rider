@@ -1,4 +1,4 @@
-import bookingService from "../test/booking.service";
+import bookingService from "../firebase/booking.service";
 
 // Create Booking
 // Create Booking
