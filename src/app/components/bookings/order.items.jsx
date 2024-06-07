@@ -1,4 +1,4 @@
-import { truncateText } from "@/utils/helpers/truncate";
+import { truncateText } from "@/app/helpers/truncate";
 import React from "react";
 
 const OrderItems = ({ data, onClick }) => {

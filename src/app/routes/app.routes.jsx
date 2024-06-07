@@ -4,6 +4,7 @@ import MainRoutes from "./main.routes";
 import AuthRoutes from "./auth.routes";
 import BookingForm from "../pages/test/booking.input";
 import { createBooking } from "../services/actions/booking.actions";
+import AccountRoutes from "./account.routes";
 
 function AppRoute() {
   const [bookings, setBookings] = useState([]);
@@ -29,6 +30,7 @@ function AppRoute() {
       <Routes>
         <Route path="/*" element={<AuthRoutes />} />
         <Route path="/main/*" element={<MainRoutes />} />
+        <Route path="/account/*" element={<AccountRoutes />} />
         <Route
           path="/test.book"
           element={<BookingForm onCreateBooking={handleCreateBooking} />}
